@@ -3,36 +3,32 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git curl zip unzip tar build-essential cmake ninja-build pkg-config \
     ca-certificates && rm -rf /var/lib/apt/lists/*
-# Instalar vcpkg
+# vcpkg
 WORKDIR /opt
 RUN git clone https://github.com/microsoft/vcpkg.git && cd vcpkg && ./bootstrap-vcpkg.sh
 ENV VCPKG_ROOT=/opt/vcpkg
 ENV PATH="${VCPKG_ROOT}:${PATH}"
-# Instalar dependencias del proyecto
+# Dependencies (manifest mode, cached until vcpkg.json changes)
 WORKDIR /usr/src/forgottenserver-downgrade
 COPY vcpkg.json ./
 RUN /opt/vcpkg/vcpkg install --triplet x64-linux
-# Copiar el resto del código
+# Source + single CMake configure/build with the vcpkg toolchain
 COPY cmake /usr/src/forgottenserver-downgrade/cmake/
 COPY src /usr/src/forgottenserver-downgrade/src/
 COPY CMakeLists.txt /usr/src/forgottenserver-downgrade/
 WORKDIR /usr/src/forgottenserver-downgrade
-# Usar el flujo clásico de CMake con vcpkg toolchain
-RUN cmake -S . -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake \
-    && cmake --build build --config RelWithDebInfo
-
-COPY src /usr/src/forgottenserver-downgrade/src/
-COPY CMakeLists.txt /usr/src/forgottenserver-downgrade/
-WORKDIR /usr/src/forgottenserver-downgrade
-# Usar el flujo clásico de CMake para máxima compatibilidad
-RUN cmake -S . -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-    && cmake --build build --config RelWithDebInfo
+RUN cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg/scripts/buildsystems/vcpkg.cmake \
+    && cmake --build build
 
 FROM ubuntu:22.04
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*
 COPY --from=build /usr/src/forgottenserver-downgrade/build/tfs /bin/tfs
+# vcpkg shared libraries (libmariadb, openssl, fmt, ...) must survive into the runtime stage
+COPY --from=build /opt/vcpkg/installed/x64-linux/lib/ /usr/local/lib/
+RUN ldconfig
 COPY data /srv/data/
-COPY LICENSE README.md *.dist *.sql key.pem /srv/
+COPY LICENSE README.md config.lua.dist schema.sql key.pem /srv/
 EXPOSE 7171 7172
 WORKDIR /srv
 VOLUME /srv
