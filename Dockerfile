@@ -9,7 +9,6 @@ RUN git clone https://github.com/microsoft/vcpkg.git && cd vcpkg && ./bootstrap-
 ENV VCPKG_ROOT=/opt/vcpkg
 ENV PATH="${VCPKG_ROOT}:${PATH}"
 # Dependencies (manifest mode, cached until vcpkg.json changes)
-ENV VCPKG_INSTALLED_DIR=/opt/vcpkg/installed
 WORKDIR /usr/src/forgottenserver-downgrade
 COPY vcpkg.json ./
 RUN /opt/vcpkg/vcpkg install --triplet x64-linux
@@ -25,8 +24,10 @@ RUN cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo \
 FROM ubuntu:22.04
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*
 COPY --from=build /usr/src/forgottenserver-downgrade/build/tfs /bin/tfs
-# vcpkg shared libraries (libmariadb, openssl, fmt, ...) must survive into the runtime stage
-COPY --from=build /opt/vcpkg/installed/x64-linux/lib/ /usr/local/lib/
+# vcpkg-installed libs: this engine's deps are static archives, but any
+# shared dependency must survive into the runtime stage. The toolchain's
+# manifest install root is build/vcpkg_installed (CMAKE_BINARY_DIR default).
+COPY --from=build /usr/src/forgottenserver-downgrade/build/vcpkg_installed/x64-linux/lib/ /usr/local/lib/
 RUN ldconfig
 COPY data /srv/data/
 COPY LICENSE README.md config.lua.dist schema.sql key.pem /srv/
