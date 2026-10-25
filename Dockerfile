@@ -9,6 +9,7 @@ RUN git clone https://github.com/microsoft/vcpkg.git && cd vcpkg && ./bootstrap-
 ENV VCPKG_ROOT=/opt/vcpkg
 ENV PATH="${VCPKG_ROOT}:${PATH}"
 # Dependencies (manifest mode, cached until vcpkg.json changes)
+ENV VCPKG_INSTALLED_DIR=/opt/vcpkg/installed
 WORKDIR /usr/src/forgottenserver-downgrade
 COPY vcpkg.json ./
 RUN /opt/vcpkg/vcpkg install --triplet x64-linux
