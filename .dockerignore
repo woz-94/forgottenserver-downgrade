@@ -1,2 +1,9 @@
 build/**
 
+
+# local RME map workspace (keep it out of the build context)
+map-workspace/**
+
+# the map ships as a GitHub release artifact, not in the image
+# (init container -> /srv/data/world); see scripts/release-world.sh
+data/world/

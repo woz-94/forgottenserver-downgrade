@@ -196,3 +196,10 @@ tfs
 
 # Others
 *.emmyrc.json
+
+# local RME map workspace (scratch, not shipped)
+map-workspace/
+
+# Map lives on the release feed, not in git (see data/world/README.md)
+data/world/*
+!data/world/README.md
