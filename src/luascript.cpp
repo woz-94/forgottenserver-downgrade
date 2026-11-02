@@ -978,9 +978,23 @@ void Lua::pushCombatDamage(lua_State* L, const CombatDamage& damage)
 	lua_pushinteger(L, damage.origin);
 }
 
+static std::string_view getSpellGroupName(SpellGroup_t group)
+{
+	switch (group) {
+		case SPELLGROUP_ATTACK:
+			return "attack";
+		case SPELLGROUP_HEALING:
+			return "healing";
+		case SPELLGROUP_SUPPORT:
+			return "support";
+		default:
+			return "none";
+	}
+}
+
 void Lua::pushInstantSpell(lua_State* L, const InstantSpell& spell)
 {
-	lua_createtable(L, 0, 7);
+	lua_createtable(L, 0, 10);
 
 	setField(L, "name", spell.getName());
 	setField(L, "words", spell.getWords());
@@ -989,6 +1003,10 @@ void Lua::pushInstantSpell(lua_State* L, const InstantSpell& spell)
 	setField(L, "mana", spell.getMana());
 	setField(L, "manapercent", spell.getManaPercent());
 	setField(L, "params", spell.getHasParam());
+	setField(L, "soul", spell.getSoulCost());
+	setField(L, "group", getSpellGroupName(spell.getGroup()));
+	pushBoolean(L, spell.isPremium());
+	lua_setfield(L, -2, "premium");
 
 	setMetatable(L, -1, "Spell");
 }

@@ -11,6 +11,7 @@ spell:group("healing")
 spell:cooldown(2000)
 spell:isAggressive(false)
 spell:needTarget(true)
+spell:allowFarUse(true)
 spell:needLearn(false)
 
 function spell.onCastSpell(creature, variant, isHotkey)

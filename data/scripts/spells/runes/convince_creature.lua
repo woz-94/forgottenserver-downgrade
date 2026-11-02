@@ -1,13 +1,11 @@
-local spell = Spell(SPELL_INSTANT)
-spell:name("Convince Creature")
-spell:words("adeta sio")
+local spell = Spell(SPELL_RUNE)
+spell:name("Convince Creature Rune")
+spell:runeId(2290)
 spell:group("support")
-spell:vocation("Druid", "Elder Druid")
-spell:level(16)
-spell:mana(0)
+spell:cooldown(2000)
 spell:isAggressive(false)
 spell:needTarget(true)
-spell:cooldown(2000)
+spell:allowFarUse(true)
 spell:needLearn(false)
 
 function spell.onCastSpell(creature, variant, isHotkey)
@@ -49,4 +47,3 @@ function spell.onCastSpell(creature, variant, isHotkey)
 end
 
 spell:register()
-

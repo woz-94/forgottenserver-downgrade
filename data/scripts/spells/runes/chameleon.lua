@@ -1,17 +1,14 @@
 local condition = Condition(CONDITION_OUTFIT)
 condition:setTicks(200000)
 
-local spell = Spell(SPELL_INSTANT)
-spell:name("Chameleon")
-spell:words("adevo ina")
+local spell = Spell(SPELL_RUNE)
+spell:name("Chameleon Rune")
+spell:runeId(2291)
 spell:group("support")
-spell:vocation("Druid", "Elder Druid")
-spell:level(27)
-spell:mana(100)
-spell:isPremium(true)
-spell:isAggressive(false)
-spell:needTarget(true)
 spell:cooldown(2000)
+spell:isAggressive(false)
+spell:needTarget(false)
+spell:allowFarUse(true)
 spell:needLearn(false)
 
 function spell.onCastSpell(creature, variant, isHotkey)
@@ -40,4 +37,3 @@ function spell.onCastSpell(creature, variant, isHotkey)
 end
 
 spell:register()
-

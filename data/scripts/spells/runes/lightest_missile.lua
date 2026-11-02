@@ -20,6 +20,7 @@ spell:group("attack")
 spell:cooldown(2000)
 spell:isAggressive(true)
 spell:needTarget(true)
+spell:allowFarUse(true)
 spell:needLearn(false)
 
 function spell.onCastSpell(creature, variant, isHotkey)

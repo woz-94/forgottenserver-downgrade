@@ -1,0 +1,17 @@
+local spell = Spell(SPELL_INSTANT)
+spell:name("Fire Wall")
+spell:words("adevo mas grav flam")
+spell:group("support")
+spell:vocation("Sorcerer", "Druid", "Master Sorcerer", "Elder Druid")
+spell:level(33)
+spell:mana(780)
+spell:soul(4)
+spell:isAggressive(false)
+spell:cooldown(2000)
+spell:needLearn(false)
+
+function spell.onCastSpell(creature, variant)
+	return creature:conjureItem(2260, 2303, 4)
+end
+
+spell:register()
