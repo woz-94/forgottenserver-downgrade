@@ -715,6 +715,7 @@ inline typename std::enable_if<std::is_floating_point<T>::value, T>::type getFie
 }
 
 std::string getFieldString(lua_State* L, int32_t arg, std::string_view key);
+bool getShopItems(lua_State* L, int32_t index, std::list<ShopInfo>& items);
 
 LuaDataType getUserdataType(lua_State* L, int32_t arg);
 std::optional<uint8_t> getBlessingId(lua_State* L, int32_t arg);

@@ -21,6 +21,7 @@
 #include "scheduler.h"
 #include "script.h"
 #include "server.h"
+#include "shop.h"
 #include "spells.h"
 #include "talkaction.h"
 #include "weapons.h"
@@ -3075,7 +3076,7 @@ void Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t coun
 
 	int32_t onBuy, onSell;
 
-	Npc* merchant = player->getShopOwner(onBuy, onSell);
+	ShopOwner* merchant = player->getShopOwner(onBuy, onSell);
 	if (!merchant) {
 		return;
 	}
@@ -3112,7 +3113,7 @@ void Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, u
 
 	int32_t onBuy, onSell;
 
-	Npc* merchant = player->getShopOwner(onBuy, onSell);
+	ShopOwner* merchant = player->getShopOwner(onBuy, onSell);
 	if (!merchant) {
 		return;
 	}
@@ -3151,7 +3152,7 @@ void Game::playerLookInShop(uint32_t playerId, uint16_t spriteId, uint8_t count)
 
 	int32_t onBuy, onSell;
 
-	Npc* merchant = player->getShopOwner(onBuy, onSell);
+	ShopOwner* merchant = player->getShopOwner(onBuy, onSell);
 	if (!merchant) {
 		return;
 	}

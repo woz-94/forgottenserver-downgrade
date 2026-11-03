@@ -262,6 +262,7 @@
     <ClCompile Include="..\src\script.cpp" />
     <ClCompile Include="..\src\scriptmanager.cpp" />
     <ClCompile Include="..\src\server.cpp" />
+    <ClCompile Include="..\src\shop.cpp" />
     <ClCompile Include="..\src\signals.cpp" />
     <ClCompile Include="..\src\spawn.cpp" />
     <ClCompile Include="..\src\spells.cpp" />
@@ -346,6 +347,7 @@
     <ClInclude Include="..\src\signals.h" />
     <ClInclude Include="..\src\spawn.h" />
     <ClInclude Include="..\src\spectators.h" />
+    <ClInclude Include="..\src\shop.h" />
     <ClInclude Include="..\src\spells.h" />
     <ClInclude Include="..\src\protocolstatus.h" />
     <ClInclude Include="..\src\talkaction.h" />

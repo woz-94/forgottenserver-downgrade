@@ -6,6 +6,7 @@
 
 #include "creature.h"
 #include "luascript.h"
+#include "shop.h"
 
 #include <set>
 
@@ -87,7 +88,7 @@ private:
 	bool loaded = false;
 };
 
-class Npc final : public Creature
+class Npc final : public Creature, public ShopOwner
 {
 public:
 	~Npc();
@@ -143,8 +144,8 @@ public:
 
 	void onPlayerCloseChannel(Player* player);
 	void onPlayerTrade(Player* player, int32_t callback, uint16_t itemId, uint8_t count, uint8_t amount,
-	                   bool ignore = false, bool inBackpacks = false);
-	void onPlayerEndTrade(Player* player, int32_t buyCallback, int32_t sellCallback);
+	                   bool ignore = false, bool inBackpacks = false) override;
+	void onPlayerEndTrade(Player* player, int32_t buyCallback, int32_t sellCallback) override;
 
 	void turnToCreature(Creature* creature);
 	void setCreatureFocus(Creature* creature);

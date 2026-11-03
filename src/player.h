@@ -15,10 +15,12 @@
 #include "outfit.h"
 #include "party.h"
 #include "protocolgame.h"
+#include "shop.h"
 #include "town.h"
 #include "vocation.h"
 
 #include <bitset>
+#include <memory>
 
 class House;
 class NetworkMessage;
@@ -29,6 +31,7 @@ class Party;
 class SchedulerTask;
 class Bed;
 class Guild;
+class LuaScriptInterface;
 
 enum skillsid_t
 {
@@ -362,26 +365,29 @@ public:
 	Item* getTradeItem() { return tradeItem; }
 
 	// shop functions
-	void setShopOwner(Npc* owner, int32_t onBuy, int32_t onSell)
+	void setShopOwner(ShopOwner* owner, int32_t onBuy, int32_t onSell)
 	{
 		shopOwner = owner;
 		purchaseCallback = onBuy;
 		saleCallback = onSell;
 	}
 
-	Npc* getShopOwner(int32_t& onBuy, int32_t& onSell)
+	ShopOwner* getShopOwner(int32_t& onBuy, int32_t& onSell)
 	{
 		onBuy = purchaseCallback;
 		onSell = saleCallback;
 		return shopOwner;
 	}
 
-	const Npc* getShopOwner(int32_t& onBuy, int32_t& onSell) const
+	const ShopOwner* getShopOwner(int32_t& onBuy, int32_t& onSell) const
 	{
 		onBuy = purchaseCallback;
 		onSell = saleCallback;
 		return shopOwner;
 	}
+
+	void openLuaShopWindow(const std::list<ShopInfo>& items, LuaScriptInterface* interface, int32_t onBuy,
+	                       int32_t onSell);
 
 	// V.I.P. functions
 	void notifyStatusChange(Player* loginPlayer, VipStatus_t status);
@@ -1073,7 +1079,8 @@ private:
 	Item* inventory[CONST_SLOT_LAST + 1] = {};
 	Item* writeItem = nullptr;
 	House* editHouse = nullptr;
-	Npc* shopOwner = nullptr;
+	ShopOwner* shopOwner = nullptr;
+	std::unique_ptr<LuaShopOwner> luaShopOwner;
 	Party* party = nullptr;
 	Player* tradePartner = nullptr;
 	ProtocolGame_ptr client;

@@ -92,6 +92,7 @@ set(tfs_SRC
 	${CMAKE_CURRENT_LIST_DIR}/script.cpp
 	${CMAKE_CURRENT_LIST_DIR}/scriptmanager.cpp
 	${CMAKE_CURRENT_LIST_DIR}/server.cpp
+	${CMAKE_CURRENT_LIST_DIR}/shop.cpp
 	${CMAKE_CURRENT_LIST_DIR}/signals.cpp
 	${CMAKE_CURRENT_LIST_DIR}/spawn.cpp
 	${CMAKE_CURRENT_LIST_DIR}/spells.cpp
@@ -179,6 +180,7 @@ set(tfs_HDR
 	${CMAKE_CURRENT_LIST_DIR}/signals.h
 	${CMAKE_CURRENT_LIST_DIR}/spawn.h
 	${CMAKE_CURRENT_LIST_DIR}/spectators.h
+	${CMAKE_CURRENT_LIST_DIR}/shop.h
 	${CMAKE_CURRENT_LIST_DIR}/spells.h
 	${CMAKE_CURRENT_LIST_DIR}/talkaction.h
 	${CMAKE_CURRENT_LIST_DIR}/tasks.h

@@ -1006,6 +1006,56 @@ int luaPlayerSetBankBalance(lua_State* L)
 	return 1;
 }
 
+int luaPlayerOpenShopWindow(lua_State* L)
+{
+	// player:openShopWindow(items, onBuy, onSell)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	int32_t sellCallback = -1;
+	if (lua_gettop(L) >= 4) {
+		if (lua_isfunction(L, 4)) {
+			sellCallback = popCallback(L);
+		} else {
+			lua_pop(L, 1);
+		}
+	}
+
+	int32_t buyCallback = -1;
+	if (lua_gettop(L) >= 3) {
+		if (lua_isfunction(L, 3)) {
+			buyCallback = popCallback(L);
+		} else {
+			lua_pop(L, 1);
+		}
+	}
+
+	if (!lua_istable(L, -1)) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	std::list<ShopInfo> items;
+	if (!getShopItems(L, -1, items)) {
+		pushBoolean(L, false);
+		return 1;
+	}
+	lua_pop(L, 1);
+
+	ScriptEnvironment* env = LuaScriptInterface::getScriptEnv();
+	if (!env) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	player->openLuaShopWindow(items, env->getScriptInterface(), buyCallback, sellCallback);
+	pushBoolean(L, true);
+	return 1;
+}
+
 int luaPlayerAddItem(lua_State* L)
 {
 	// player:addItem(itemId[, count = 1[, canDropOnMap = true[, subType = 1[, slot = CONST_SLOT_WHEREEVER]]]])
@@ -2369,6 +2419,7 @@ void LuaScriptInterface::registerPlayer()
 	registerMethod("Player", "addItem", luaPlayerAddItem);
 	registerMethod("Player", "addItemEx", luaPlayerAddItemEx);
 	registerMethod("Player", "removeItem", luaPlayerRemoveItem);
+	registerMethod("Player", "openShopWindow", luaPlayerOpenShopWindow);
 
 	registerMethod("Player", "getMoney", luaPlayerGetMoney);
 	registerMethod("Player", "addMoney", luaPlayerAddMoney);

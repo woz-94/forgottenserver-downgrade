@@ -34,6 +34,7 @@ local catalogue = {
 	{words = "!sellhouse", usage = "<player>", desc = "Transfer your house to a player."},
 	{words = "!serverinfo", desc = "Show server rates and settings."},
 	{words = "!spells", usage = "[all|group]", desc = "List your spells."},
+	{words = "!store", usage = "[page|name]", desc = "Open the mobile store."},
 	{words = "!uptime", desc = "Show how long the server has been up."},
 
 	-- Access commands

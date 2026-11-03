@@ -14,6 +14,7 @@
 #include "monster.h"
 #include "movement.h"
 #include "scheduler.h"
+#include "shop.h"
 #include "weapons.h"
 
 extern Game g_game;
@@ -1138,20 +1139,35 @@ void Player::openShopWindow(const std::list<ShopInfo>& shop)
 	sendSaleItemList();
 }
 
+void Player::openLuaShopWindow(const std::list<ShopInfo>& items, LuaScriptInterface* interface, int32_t onBuy,
+                               int32_t onSell)
+{
+	// Replace any shop that is currently open.
+	closeShopWindow(false);
+
+	luaShopOwner = std::make_unique<LuaShopOwner>(interface);
+	setShopOwner(luaShopOwner.get(), onBuy, onSell);
+	openShopWindow(items);
+}
+
 bool Player::closeShopWindow(bool sendCloseShopWindow /*= true*/)
 {
 	// unreference callbacks
 	int32_t onBuy;
 	int32_t onSell;
 
-	Npc* npc = getShopOwner(onBuy, onSell);
-	if (!npc) {
+	ShopOwner* owner = getShopOwner(onBuy, onSell);
+	if (!owner) {
 		shopItemList.clear();
 		return false;
 	}
 
 	setShopOwner(nullptr, -1, -1);
-	npc->onPlayerEndTrade(this, onBuy, onSell);
+	owner->onPlayerEndTrade(this, onBuy, onSell);
+
+	if (luaShopOwner && owner == luaShopOwner.get()) {
+		luaShopOwner.reset();
+	}
 
 	if (sendCloseShopWindow) {
 		sendCloseShop();

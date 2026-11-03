@@ -750,31 +750,11 @@ int NpcScriptInterface::luaOpenShopWindow(lua_State* L)
 		buyCallback = Lua::popCallback(L);
 	}
 
-	if (lua_istable(L, -1) == 0) {
+	std::list<ShopInfo> items;
+	if (!Lua::getShopItems(L, -1, items)) {
 		LuaScriptInterface::reportError(__FUNCTION__, "item list is not a table.");
 		Lua::pushBoolean(L, false);
 		return 1;
-	}
-
-	std::list<ShopInfo> items;
-	lua_pushnil(L);
-	while (lua_next(L, -2) != 0) {
-		const auto tableIndex = lua_gettop(L);
-		ShopInfo item;
-
-		item.itemId = Lua::getField<uint16_t>(L, tableIndex, "id");
-		item.subType = Lua::getField<int32_t>(L, tableIndex, "subType");
-		if (item.subType == 0) {
-			item.subType = Lua::getField<int32_t>(L, tableIndex, "subtype");
-			lua_pop(L, 1);
-		}
-
-		item.buyPrice = Lua::getField<uint32_t>(L, tableIndex, "buy");
-		item.sellPrice = Lua::getField<uint32_t>(L, tableIndex, "sell");
-		item.realName = Lua::getFieldString(L, tableIndex, "name");
-
-		items.push_back(item);
-		lua_pop(L, 6);
 	}
 	lua_pop(L, 1);
 
@@ -823,7 +803,7 @@ int NpcScriptInterface::luaCloseShopWindow(lua_State* L)
 	int32_t buyCallback;
 	int32_t sellCallback;
 
-	Npc* merchant = player->getShopOwner(buyCallback, sellCallback);
+	ShopOwner* merchant = player->getShopOwner(buyCallback, sellCallback);
 
 	// Check if we actually have a shop window with this player.
 	if (merchant == npc) {
@@ -976,27 +956,11 @@ int NpcScriptInterface::luaNpcOpenShopWindow(lua_State* L)
 	}
 
 	std::list<ShopInfo> items;
-
-	lua_pushnil(L);
-	while (lua_next(L, 3) != 0) {
-		const auto tableIndex = lua_gettop(L);
-		ShopInfo item;
-
-		item.itemId = Lua::getField<uint16_t>(L, tableIndex, "id");
-		item.subType = Lua::getField<int32_t>(L, tableIndex, "subType");
-		if (item.subType == 0) {
-			item.subType = Lua::getField<int32_t>(L, tableIndex, "subtype");
-			lua_pop(L, 1);
-		}
-
-		item.buyPrice = Lua::getField<uint32_t>(L, tableIndex, "buy");
-		item.sellPrice = Lua::getField<uint32_t>(L, tableIndex, "sell");
-		item.realName = Lua::getFieldString(L, tableIndex, "name");
-
-		items.push_back(item);
-		lua_pop(L, 6);
+	if (!Lua::getShopItems(L, 3, items)) {
+		reportErrorFunc(L, "item list is not a table.");
+		Lua::pushBoolean(L, false);
+		return 1;
 	}
-	lua_pop(L, 1);
 
 	player->closeShopWindow(false);
 	npc->addShopPlayer(player);
@@ -1028,7 +992,7 @@ int NpcScriptInterface::luaNpcCloseShopWindow(lua_State* L)
 	int32_t buyCallback;
 	int32_t sellCallback;
 
-	Npc* merchant = player->getShopOwner(buyCallback, sellCallback);
+	ShopOwner* merchant = player->getShopOwner(buyCallback, sellCallback);
 	if (merchant == npc) {
 		player->sendCloseShop();
 		if (buyCallback != -1) {

@@ -941,6 +941,41 @@ std::string Lua::getFieldString(lua_State* L, int32_t arg, std::string_view key)
 	return getString(L, -1);
 }
 
+bool Lua::getShopItems(lua_State* L, int32_t index, std::list<ShopInfo>& items)
+{
+	// Resolve a negative index before pushing the lua_next key; negative
+	// indices are relative to the current top and would otherwise point at
+	// the key instead of the item table.
+	if (index < 0) {
+		index = lua_gettop(L) + index + 1;
+	}
+
+	if (!lua_istable(L, index)) {
+		return false;
+	}
+
+	lua_pushnil(L);
+	while (lua_next(L, index) != 0) {
+		const int32_t valueIndex = lua_gettop(L);
+
+		ShopInfo item;
+		item.itemId = getField<uint16_t>(L, valueIndex, "id");
+		item.subType = getField<int32_t>(L, valueIndex, "subType");
+		if (item.subType == 0) {
+			item.subType = getField<int32_t>(L, valueIndex, "subtype");
+			lua_pop(L, 1);
+		}
+		item.buyPrice = getField<uint32_t>(L, valueIndex, "buy");
+		item.sellPrice = getField<uint32_t>(L, valueIndex, "sell");
+		item.realName = getFieldString(L, valueIndex, "name");
+		items.push_back(item);
+
+		// Keep the current key for the next lua_next call.
+		lua_settop(L, valueIndex - 1);
+	}
+	return true;
+}
+
 LuaDataType Lua::getUserdataType(lua_State* L, int32_t arg)
 {
 	if (lua_getmetatable(L, arg) == 0) {
