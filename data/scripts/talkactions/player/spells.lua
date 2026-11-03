@@ -109,4 +109,5 @@ function spells.onSay(player, words, param)
 	return false
 end
 
+spells:separator(" ")
 spells:register()
