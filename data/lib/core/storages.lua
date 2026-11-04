@@ -2,6 +2,20 @@
 -- (HIGHLY RECOMMENDED -> ONE mission per STORAGE) --
 -- Sort it in Values -
 
+-- TFS system storages.  This pack's quest tables use the Storage table, but
+-- several scripts migrated from TFS still reference PlayerStorageKeys.  Keep
+-- the system ids here so both naming styles resolve to the same storage ids.
+PlayerStorageKeys = {
+	annihilatorReward = 30015,
+	promotion = 30018,
+	delayLargeSeaShell = 30019,
+	delayWallMirror = 30021,
+	madSheepSummon = 30023,
+	crateUsable = 30024,
+	achievementsBase = 300000,
+	achievementsCounter = 20000,
+}
+
 Storage = {
 		DeeplingsWorldChange = {
 			Questline = 25000,
