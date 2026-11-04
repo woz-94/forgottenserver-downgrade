@@ -96,6 +96,14 @@ function door.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		target:transform(transformTo)
 		return true
 	elseif table.contains(lockedDoors, itemId) then
+		-- A locked-door tile with no action id has no key defined anywhere in
+		-- the map, so no key can ever open it.  The converted map uses these
+		-- tiles for ordinary shop entrances, which are not meant to be locked.
+		-- Treat them as closed doors; keyed locked doors keep their behaviour.
+		if item.actionid == 0 and table.contains(openDoors, itemId + 2) then
+			item:transform(itemId + 2)
+			return true
+		end
 		player:sendTextMessage(MESSAGE_INFO_DESCR, "It is locked.")
 		return true
 	elseif table.contains(openDoors, itemId) or
