@@ -141,7 +141,10 @@ function potions.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		if potion.antidote then target:removeCondition(CONDITION_POISON) end
 
 		player:addAchievementProgress("Potion Addict", 100000)
-		player:addItem(potion.flask)
+		-- Only produce an empty flask when the potion is actually consumed.
+		if configManager.getBoolean(configKeys.REMOVE_POTION_CHARGES) then
+			player:addItem(potion.flask)
+		end
 		target:say("Aaaah...", TALKTYPE_MONSTER_SAY)
 		target:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
 	end
