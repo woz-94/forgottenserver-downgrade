@@ -40,3 +40,5 @@ local keywordHandler = KeywordHandler:new()
        
 
         npcHandler:addModule(FocusModule:new())
+
+SeaTravel.add(keywordHandler, npcHandler)

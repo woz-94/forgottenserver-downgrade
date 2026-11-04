@@ -33,3 +33,5 @@ local travelNode = keywordHandler:addKeyword({'thais'}, StdModule.travel, {npcHa
        
 
         npcHandler:addModule(FocusModule:new())
+
+SeaTravel.add(keywordHandler, npcHandler)

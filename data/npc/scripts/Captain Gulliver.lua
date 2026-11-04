@@ -46,3 +46,5 @@ npcHandler:setMessage(MESSAGE_GREET, 'Welcome on board, Sir |PLAYERNAME|. Where 
 npcHandler:setMessage(MESSAGE_FAREWELL, 'Good bye. Recommend us if you were satisfied with our service.')
 
 npcHandler:addModule(FocusModule:new())
+
+SeaTravel.add(keywordHandler, npcHandler)

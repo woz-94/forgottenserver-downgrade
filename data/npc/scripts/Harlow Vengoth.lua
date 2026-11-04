@@ -16,3 +16,5 @@ npcHandler:setMessage(MESSAGE_FAREWELL, "Good bye.")
 npcHandler:setMessage(MESSAGE_WALKAWAY, "Good bye then.")
 
 npcHandler:addModule(FocusModule:new())
+
+SeaTravel.add(keywordHandler, npcHandler)

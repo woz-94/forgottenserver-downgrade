@@ -16,3 +16,5 @@ local keywordHandler = KeywordHandler:new()
         local travelNode = keywordHandler:addKeyword({'peg leg'}, StdModule.travel, {npcHandler = npcHandler, premium = true, level = 0, cost = 0, destination = {x=32346, y=32625, z=7} })
     
         npcHandler:addModule(FocusModule:new())
+
+SeaTravel.add(keywordHandler, npcHandler)

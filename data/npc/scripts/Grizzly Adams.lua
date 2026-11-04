@@ -42,9 +42,6 @@ function creatureSayCallback(cid, type, msg)
         end
                 if tasks[s] then
                         if(getPlayerStorageValue(cid, tasks[s].questStarted) < 1) then
-                                if(getPlayerStorageValue(cid, tasks[s].creatureStorage) < 0) then
-                                        doPlayerSetStorageValue(cid, tasks[s].creatureStorage, 0)
-                                end
                                 if(getPlayerStorageValue(cid, tasks[s].questStorage) < 0) then
                                         doPlayerSetStorageValue(cid, tasks[s].questStorage, 0)
                                 end
@@ -57,10 +54,7 @@ function creatureSayCallback(cid, type, msg)
         if(s < 0) then
                 doPlayerSetStorageValue(cid, storage, 1)
         end
-                if tasks[s].questStarted > 0 then
-                        if(getPlayerStorageValue(cid, tasks[s].creatureStorage) < 0) then
-                                doPlayerSetStorageValue(cid, tasks[s].creatureStorage, 0)
-                        end
+                if tasks[s] and tasks[s].questStarted > 0 then
                         if(getPlayerStorageValue(cid, tasks[s].questStorage) < 0) then
                                 doPlayerSetStorageValue(cid, tasks[s].questStorage, 0)
                         end

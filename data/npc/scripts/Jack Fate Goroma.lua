@@ -23,3 +23,5 @@ local travelNode = keywordHandler:addKeyword({'liberty bay'}, StdModule.travel, 
        
 
         npcHandler:addModule(FocusModule:new())
+
+SeaTravel.add(keywordHandler, npcHandler)

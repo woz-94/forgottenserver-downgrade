@@ -666,7 +666,10 @@ function getPlayerSex(cid)
 end
 function getPlayerStorageValue(cid, key)
 	local p = Player(cid)
-	return p and p:getStorageValue(key) or false
+	-- Old TFS returned -1 for an unset storage value; Creature:getStorageValue
+	-- returns nil unless a default is supplied.  Scripts compare this result
+	-- with < 0, so keep the historical -1 default.
+	return p and p:getStorageValue(key, -1) or -1
 end
 function getPlayerBalance(cid)
 	local p = Player(cid)

@@ -44,7 +44,10 @@ if Modules == nil then
             (parameters.onlyFocus == nil or parameters.onlyFocus == true)
         if not npcHandler:isFocused(cid) and onlyFocus then return false end
 
-        local parseInfo = {[TAG_PLAYERNAME] = Player(cid):getName()}
+        local parseInfo = {
+            [TAG_PLAYERNAME] = Player(cid):getName(),
+            ['|TRAVELCOST|'] = 'free'
+        }
         npcHandler:say(npcHandler:parseMessage(parameters.text or
                                                    parameters.message, parseInfo),
                        cid, parameters.publicize and true)
@@ -163,31 +166,27 @@ if Modules == nil then
         if not npcHandler:isFocused(cid) then return false end
 
         local player = Player(cid)
-        if player:isPremium() or not parameters.premium then
-            if player:isPzLocked() then
-                npcHandler:say(
-                    "First get rid of those blood stains! You are not going to ruin my vehicle!",
-                    cid)
-            elseif parameters.level and player:getLevel() < parameters.level then
-                npcHandler:say("You must reach level " .. parameters.level ..
-                                   " before I can let you go there.", cid)
-            elseif not player:removeTotalMoney(parameters.cost) then
-                npcHandler:say("You don't have enough money.", cid)
-            else
-                npcHandler:say(parameters.msg or "Set the sails!", cid)
-                npcHandler:releaseFocus(cid)
-
-                local destination = Position(parameters.destination)
-                local position = player:getPosition()
-                player:teleportTo(destination)
-
-                position:sendMagicEffect(CONST_ME_TELEPORT)
-                destination:sendMagicEffect(CONST_ME_TELEPORT)
-            end
-        else
+        if player:isPzLocked() then
             npcHandler:say(
-                "I'm sorry, but you need a premium account in order to travel onboard our ships.",
+                "First get rid of those blood stains! You are not going to ruin my vehicle!",
                 cid)
+        elseif parameters.level and player:getLevel() < parameters.level then
+            npcHandler:say("You must reach level " .. parameters.level ..
+                               " before I can let you go there.", cid)
+        else
+            npcHandler:say(parameters.msg or "Set the sails!", cid)
+            npcHandler:releaseFocus(cid)
+
+            local destination = parameters.destination
+            if type(destination) == 'function' then
+                destination = destination(player)
+            end
+            destination = Position(destination)
+            local position = player:getPosition()
+            player:teleportTo(destination)
+
+            position:sendMagicEffect(CONST_ME_TELEPORT)
+            destination:sendMagicEffect(CONST_ME_TELEPORT)
         end
         npcHandler:resetNpc(cid)
         return true
@@ -447,16 +446,11 @@ if Modules == nil then
         local npcHandler = module.npcHandler
 
         shop_destination[cid] = parameters.destination
-        shop_cost[cid] = parameters.cost
-        shop_premium[cid] = parameters.premium
+        shop_cost[cid] = 0
+        shop_premium[cid] = false
         shop_npcuid[cid] = getNpcCid()
 
-        local cost = parameters.cost
-        local destination = parameters.destination
-        local premium = parameters.premium
-
-        module.npcHandler:say("Do you want to travel to " .. keywords[1] ..
-                                  " for " .. cost .. " gold coins?", cid)
+        module.npcHandler:say("Do you want to travel to " .. keywords[1] .. "?", cid)
         return true
     end
 
@@ -468,28 +462,20 @@ if Modules == nil then
 
         local npcHandler = module.npcHandler
 
-        local cost = shop_cost[cid]
         local destination = Position(shop_destination[cid])
 
         local player = Player(cid)
-        if player:isPremium() or not shop_premium[cid] then
-            if not player:removeTotalMoney(cost) then
-                npcHandler:say("You do not have enough money!", cid)
-            elseif player:isPzLocked() then
-                npcHandler:say("Get out of there with this blood.", cid)
-            else
-                npcHandler:say("It was a pleasure doing business with you.", cid)
-                npcHandler:releaseFocus(cid)
-
-                local position = player:getPosition()
-                player:teleportTo(destination)
-
-                position:sendMagicEffect(CONST_ME_TELEPORT)
-                destination:sendMagicEffect(CONST_ME_TELEPORT)
-            end
+        if player:isPzLocked() then
+            npcHandler:say("Get out of there with this blood.", cid)
         else
-            npcHandler:say("I can only allow premium players to travel there.",
-                           cid)
+            npcHandler:say("It was a pleasure doing business with you.", cid)
+            npcHandler:releaseFocus(cid)
+
+            local position = player:getPosition()
+            player:teleportTo(destination)
+
+            position:sendMagicEffect(CONST_ME_TELEPORT)
+            destination:sendMagicEffect(CONST_ME_TELEPORT)
         end
 
         npcHandler:resetNpc(cid)
@@ -514,19 +500,14 @@ if Modules == nil then
         local module = parameters.module
         if not module.npcHandler:isFocused(cid) then return false end
 
-        local cost = parameters.cost
         local destination = Position(parameters.destination)
 
         local player = Player(cid)
-        if player:isPremium() or not parameters.premium then
-            if player:removeTotalMoney(cost) then
-                local position = player:getPosition()
-                player:teleportTo(destination)
+        local position = player:getPosition()
+        player:teleportTo(destination)
 
-                position:sendMagicEffect(CONST_ME_TELEPORT)
-                destination:sendMagicEffect(CONST_ME_TELEPORT)
-            end
-        end
+        position:sendMagicEffect(CONST_ME_TELEPORT)
+        destination:sendMagicEffect(CONST_ME_TELEPORT)
         return true
     end
 

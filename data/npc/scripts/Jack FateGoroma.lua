@@ -74,3 +74,5 @@ npcHandler:setMessage(MESSAGE_WALKAWAY, "Good bye then.")
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())
+
+SeaTravel.add(keywordHandler, npcHandler)

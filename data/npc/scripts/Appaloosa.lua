@@ -13,7 +13,7 @@ local function creatureSayCallback(cid, type, msg)
 	end
 
 	if msgcontains(msg, 'transport') then
-		npcHandler:say('We can bring you to Thais with one of our coaches for 125 gold. Are you interested?', cid)
+		npcHandler:say('We can bring you to Thais with one of our coaches. Are you interested?', cid)
 		npcHandler.topic[cid] = 1
 	elseif isInArray({'rent', 'horses'}, msg) then
 		npcHandler:say('Do you want to rent a horse for one day at a price of 500 gold?', cid)
@@ -23,11 +23,6 @@ local function creatureSayCallback(cid, type, msg)
 		if npcHandler.topic[cid] == 1 then
 			if player:isPzLocked() then
 				npcHandler:say('First get rid of those blood stains!', cid)
-				return true
-			end
-
-			if not player:removeMoneyNpc(125) then
-				npcHandler:say('You don\'t have enough money.', cid)
 				return true
 			end
 

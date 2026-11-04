@@ -8,3 +8,5 @@ function onCreatureSay(cid, type, msg)	npcHandler:onCreatureSay(cid, type, msg)	
 function onThink()						npcHandler:onThink()						end
 
 npcHandler:addModule(FocusModule:new())
+
+SeaTravel.add(keywordHandler, npcHandler)

@@ -18,6 +18,7 @@ if not NpcSystem then
 	dofile('data/npc/lib/npcsystem/keywordhandler.lua')
 	dofile('data/npc/lib/npcsystem/npchandler.lua')
 	dofile('data/npc/lib/npcsystem/modules.lua')
+	dofile('data/npc/lib/npcsystem/sea_travel.lua')
 
 	-- Global npc constants:
 
