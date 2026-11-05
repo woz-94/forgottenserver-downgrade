@@ -183,7 +183,7 @@ removeOnDespawn = true
 walkToSpawnRadius = 15
 
 -- Stamina
-staminaSystem = true
+staminaSystem = false
 
 -- Scripts
 warnUnsafeScripts = true
