@@ -57,7 +57,8 @@ function door.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	local itemId = item:getId()
 	if table.contains(closedQuestDoors, itemId) then
 		if player:getStorageValue(item.actionid) ~= -1 or
-			player:getGroup():getAccess() then
+			player:getGroup():getAccess() or
+			configManager.getBoolean(configKeys.FREE_QUEST_DOORS) then
 			item:transform(itemId + 1)
 			player:teleportTo(toPosition, true)
 		else

@@ -117,6 +117,8 @@ maxMessageBuffer = 4
 emoteSpells = true
 classicEquipmentSlots = true
 classicAttackSpeed = false
+-- Allow any player to open quest doors without the matching storage value.
+freeQuestDoors = false
 -- Auto-attack speed multiplier (1 = normal, 3 = three times as fast).
 -- Only affects weapon/fist attacks; spell cooldowns are unchanged.
 attackSpeedMultiplier = 1
