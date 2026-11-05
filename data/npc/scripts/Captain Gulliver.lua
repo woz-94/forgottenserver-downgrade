@@ -1,6 +1,7 @@
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
+SeaTravel.add(keywordHandler, npcHandler)
 
 function onCreatureAppear(cid)			npcHandler:onCreatureAppear(cid)			end
 function onCreatureDisappear(cid)		npcHandler:onCreatureDisappear(cid)			end
@@ -47,4 +48,3 @@ npcHandler:setMessage(MESSAGE_FAREWELL, 'Good bye. Recommend us if you were sati
 
 npcHandler:addModule(FocusModule:new())
 
-SeaTravel.add(keywordHandler, npcHandler)

@@ -1,6 +1,7 @@
  local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
+SeaTravel.add(keywordHandler, npcHandler)
 
 local vocation = {}
 local town = {}
@@ -151,4 +152,3 @@ npcHandler:setMessage(MESSAGE_WALKAWAY, "COME BACK WHEN YOU ARE PREPARED TO FACE
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())
 
-SeaTravel.add(keywordHandler, npcHandler)

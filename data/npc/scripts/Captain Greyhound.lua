@@ -1,6 +1,7 @@
 local keywordHandler = KeywordHandler:new()
         local npcHandler = NpcHandler:new(keywordHandler)
         NpcSystem.parseParameters(npcHandler)
+SeaTravel.add(keywordHandler, npcHandler)
         
         
         
@@ -34,4 +35,3 @@ local travelNode = keywordHandler:addKeyword({'thais'}, StdModule.travel, {npcHa
 
         npcHandler:addModule(FocusModule:new())
 
-SeaTravel.add(keywordHandler, npcHandler)

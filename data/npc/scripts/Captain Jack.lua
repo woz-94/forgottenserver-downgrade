@@ -1,6 +1,7 @@
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
+SeaTravel.add(keywordHandler, npcHandler)
 
 function onCreatureAppear(cid)			npcHandler:onCreatureAppear(cid)			end
 function onCreatureDisappear(cid)		npcHandler:onCreatureDisappear(cid)			end
@@ -9,4 +10,3 @@ function onThink()						npcHandler:onThink()						end
 
 npcHandler:addModule(FocusModule:new())
 
-SeaTravel.add(keywordHandler, npcHandler)

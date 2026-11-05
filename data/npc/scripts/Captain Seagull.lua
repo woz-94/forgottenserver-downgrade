@@ -1,6 +1,7 @@
 local keywordHandler = KeywordHandler:new()
         local npcHandler = NpcHandler:new(keywordHandler)
         NpcSystem.parseParameters(npcHandler)
+SeaTravel.add(keywordHandler, npcHandler)
         
         
         
@@ -31,4 +32,3 @@ local keywordHandler = KeywordHandler:new()
 
         npcHandler:addModule(FocusModule:new())
 
-SeaTravel.add(keywordHandler, npcHandler)
