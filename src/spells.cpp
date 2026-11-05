@@ -695,15 +695,25 @@ bool Spell::playerRuneSpellCheck(Player* player, const Position& toPos)
 	return true;
 }
 
+uint32_t Spell::getScaledCooldown() const
+{
+	const auto multiplier = ConfigManager::getInteger(ConfigManager::SPELL_COOLDOWN_MULTIPLIER);
+	if (multiplier > 1 && cooldown > 0) {
+		return std::max<uint32_t>(1, cooldown / static_cast<uint32_t>(multiplier));
+	}
+	return cooldown;
+}
+
 void Spell::postCastSpell(Player* player, bool finishedCast /*= true*/, bool payCost /*= true*/) const
 {
 	if (finishedCast) {
 		if (!player->hasFlag(PlayerFlag_HasNoExhaustion)) {
-			if (cooldown > 0) {
+			const uint32_t scaledCooldown = getScaledCooldown();
+			if (scaledCooldown > 0) {
 				if (aggressive) {
-					player->addCombatExhaust(cooldown);
+					player->addCombatExhaust(scaledCooldown);
 				} else {
-					player->addHealExhaust(cooldown);
+					player->addHealExhaust(scaledCooldown);
 				}
 			}
 
@@ -809,7 +819,7 @@ bool InstantSpell::playerCastInstant(Player* player, std::string& param)
 			target = playerTarget;
 			if (!target || target->isDead()) {
 				if (!casterTargetOrDirection) {
-					player->addHealExhaust(cooldown);
+					player->addHealExhaust(getScaledCooldown());
 					player->sendCancelMessage(ret);
 					g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 					return false;

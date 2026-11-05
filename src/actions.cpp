@@ -367,6 +367,16 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 	return RETURNVALUE_CANNOTUSETHISOBJECT;
 }
 
+static uint32_t getScaledUseDelay(ConfigManager::Integer key)
+{
+	const int64_t delay = ConfigManager::getInteger(key);
+	const auto multiplier = ConfigManager::getInteger(ConfigManager::ITEM_USE_DELAY_MULTIPLIER);
+	if (multiplier > 1 && delay > 0) {
+		return std::max<int64_t>(1, delay / multiplier);
+	}
+	return static_cast<uint32_t>(delay);
+}
+
 static void showUseHotkeyMessage(Player* player, const Item* item, uint32_t count)
 {
 	const ItemType& it = Item::items[item->getID()];
@@ -382,7 +392,7 @@ static void showUseHotkeyMessage(Player* player, const Item* item, uint32_t coun
 
 bool Actions::useItem(Player* player, const Position& pos, uint8_t index, Item* item, bool isHotkey)
 {
-	player->setNextAction(OTSYS_TIME() + getInteger(ConfigManager::ACTIONS_DELAY_INTERVAL));
+	player->setNextAction(OTSYS_TIME() + getScaledUseDelay(ConfigManager::ACTIONS_DELAY_INTERVAL));
 
 	if (isHotkey) {
 		uint16_t subType = item->getSubType();
@@ -417,7 +427,7 @@ bool Actions::useItem(Player* player, const Position& pos, uint8_t index, Item* 
 bool Actions::useItemEx(Player* player, const Position& fromPos, const Position& toPos, uint8_t toStackPos, Item* item,
                         bool isHotkey, Creature* creature /* = nullptr*/)
 {
-	player->setNextAction(OTSYS_TIME() + getInteger(ConfigManager::EX_ACTIONS_DELAY_INTERVAL));
+	player->setNextAction(OTSYS_TIME() + getScaledUseDelay(ConfigManager::EX_ACTIONS_DELAY_INTERVAL));
 
 	Action* action = getAction(item);
 	if (!action) {

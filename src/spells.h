@@ -155,6 +155,7 @@ public:
 
 	uint32_t getCooldown() const { return cooldown; }
 	void setCooldown(uint32_t cd) { cooldown = cd; }
+	uint32_t getScaledCooldown() const;
 
 	int32_t getRange() const { return range; }
 	void setRange(int32_t r) { range = r; }

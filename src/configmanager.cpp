@@ -320,6 +320,9 @@ bool ConfigManager::load()
 	    getGlobalInteger(L, "RANGE_USE_ITEM_INTERVAL", RANGE_USE_ITEM_INTERVAL);
 	integers[Integer::RANGE_USE_ITEM_EX_INTERVAL] =
 	    getGlobalInteger(L, "RANGE_USE_ITEM_EX_INTERVAL", RANGE_USE_ITEM_EX_INTERVAL);
+	integers[Integer::ATTACK_SPEED_MULTIPLIER] = std::max<int64_t>(1, getGlobalInteger(L, "attackSpeedMultiplier", 1));
+	integers[Integer::SPELL_COOLDOWN_MULTIPLIER] = std::max<int64_t>(1, getGlobalInteger(L, "spellCooldownMultiplier", 1));
+	integers[Integer::ITEM_USE_DELAY_MULTIPLIER] = std::max<int64_t>(1, getGlobalInteger(L, "itemUseDelayMultiplier", 1));
 	integers[Integer::RANGE_ROTATE_ITEM_INTERVAL] =
 	    getGlobalInteger(L, "RANGE_ROTATE_ITEM_INTERVAL", RANGE_ROTATE_ITEM_INTERVAL);
 

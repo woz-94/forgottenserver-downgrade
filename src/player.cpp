@@ -331,12 +331,20 @@ int32_t Player::getDefense() const
 
 uint32_t Player::getAttackSpeed() const
 {
+	uint32_t speed;
 	const Item* weapon = getWeapon(true);
 	if (!weapon || weapon->getAttackSpeed() == 0) {
-		return vocation->getAttackSpeed();
+		speed = vocation->getAttackSpeed();
+	} else {
+		speed = weapon->getAttackSpeed();
 	}
 
-	return weapon->getAttackSpeed();
+	// Affects only auto-attacks; spell cooldowns/exhaust are independent.
+	const auto multiplier = ConfigManager::getInteger(ConfigManager::ATTACK_SPEED_MULTIPLIER);
+	if (multiplier > 1) {
+		speed = std::max<uint32_t>(SCHEDULER_MINTICKS, speed / static_cast<uint32_t>(multiplier));
+	}
+	return speed;
 }
 
 float Player::getAttackFactor() const

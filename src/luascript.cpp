@@ -2163,6 +2163,9 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::MAX_PACKETS_PER_SECOND);
 	registerEnumIn("configKeys", ConfigManager::STAMINA_REGEN_MINUTE);
 	registerEnumIn("configKeys", ConfigManager::STAMINA_REGEN_PREMIUM);
+	registerEnumIn("configKeys", ConfigManager::ATTACK_SPEED_MULTIPLIER);
+	registerEnumIn("configKeys", ConfigManager::SPELL_COOLDOWN_MULTIPLIER);
+	registerEnumIn("configKeys", ConfigManager::ITEM_USE_DELAY_MULTIPLIER);
 
 	// os
 	registerMethod("os", "mtime", LuaScriptInterface::luaSystemTime);
