@@ -36,7 +36,7 @@ SeaTravel.add(keywordHandler, npcHandler)
 		
 			local travelNode = keywordHandler:addKeyword({'darashia'}, StdModule.travel, {npcHandler = npcHandler, premium = true, level = 0, cost = 0, destination = {x=33289, y=32480, z=6} })
 			
-				local travelNode = keywordHandler:addKeyword({'zao'}, StdModule.travel, {npcHandler = npcHandler, premium = true, level = 0, cost = 0, destination = {x=33030, y=31553, z=9} })
+				local travelNode = keywordHandler:addKeyword({'zao'}, StdModule.travel, {npcHandler = npcHandler, premium = true, level = 0, cost = 0, destination = {x=33026, y=31553, z=10} })
 				
 		local travelNode = keywordHandler:addKeyword({'gengia'}, StdModule.travel, {npcHandler = npcHandler, premium = true, level = 0, cost = 0, destination = {x=17012, y=21228, z=6} })
 		

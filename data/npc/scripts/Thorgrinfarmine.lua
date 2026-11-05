@@ -1,6 +1,7 @@
 local keywordHandler = KeywordHandler:new()
         local npcHandler = NpcHandler:new(keywordHandler)
         NpcSystem.parseParameters(npcHandler)
+SeaTravel.add(keywordHandler, npcHandler)
         
         
         
