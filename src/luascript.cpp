@@ -2103,6 +2103,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::CLASSIC_EQUIPMENT_SLOTS);
 	registerEnumIn("configKeys", ConfigManager::CLASSIC_ATTACK_SPEED);
 	registerEnumIn("configKeys", ConfigManager::FREE_QUEST_DOORS);
+	registerEnumIn("configKeys", ConfigManager::FREE_LOCKED_DOORS);
 	registerEnumIn("configKeys", ConfigManager::SERVER_SAVE_NOTIFY_MESSAGE);
 	registerEnumIn("configKeys", ConfigManager::SERVER_SAVE_CLEAN_MAP);
 	registerEnumIn("configKeys", ConfigManager::SERVER_SAVE_CLOSE);

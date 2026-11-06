@@ -119,6 +119,8 @@ classicEquipmentSlots = true
 classicAttackSpeed = false
 -- Allow any player to open quest doors without the matching storage value.
 freeQuestDoors = false
+-- Allow any player to open keyed/locked doors without the matching key.
+freeLockedDoors = false
 -- Auto-attack speed multiplier (1 = normal, 3 = three times as fast).
 -- Only affects weapon/fist attacks; spell cooldowns are unchanged.
 attackSpeedMultiplier = 1

@@ -100,8 +100,11 @@ function door.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		-- A locked-door tile with no action id has no key defined anywhere in
 		-- the map, so no key can ever open it.  The converted map uses these
 		-- tiles for ordinary shop entrances, which are not meant to be locked.
-		-- Treat them as closed doors; keyed locked doors keep their behaviour.
-		if item.actionid == 0 and table.contains(openDoors, itemId + 2) then
+		-- Treat them as closed doors; keyed locked doors keep their behaviour
+		-- unless freeLockedDoors is enabled.
+		if (item.actionid == 0 or
+			configManager.getBoolean(configKeys.FREE_LOCKED_DOORS)) and
+			table.contains(openDoors, itemId + 2) then
 			item:transform(itemId + 2)
 			return true
 		end

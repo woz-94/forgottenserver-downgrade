@@ -241,6 +241,7 @@ bool ConfigManager::load()
 	booleans[Boolean::CLASSIC_EQUIPMENT_SLOTS] = getGlobalBoolean(L, "classicEquipmentSlots", false);
 	booleans[Boolean::CLASSIC_ATTACK_SPEED] = getGlobalBoolean(L, "classicAttackSpeed", false);
 	booleans[Boolean::FREE_QUEST_DOORS] = getGlobalBoolean(L, "freeQuestDoors", false);
+	booleans[Boolean::FREE_LOCKED_DOORS] = getGlobalBoolean(L, "freeLockedDoors", false);
 	booleans[Boolean::SCRIPTS_CONSOLE_LOGS] = getGlobalBoolean(L, "showScriptsLogInConsole", true);
 	booleans[Boolean::SERVER_SAVE_NOTIFY_MESSAGE] = getGlobalBoolean(L, "serverSaveNotifyMessage", true);
 	booleans[Boolean::SERVER_SAVE_CLEAN_MAP] = getGlobalBoolean(L, "serverSaveCleanMap", false);
