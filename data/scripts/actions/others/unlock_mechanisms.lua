@@ -52,8 +52,9 @@ function mechanism.onUse(player, item, fromPosition, target, toPosition, isHotke
 		for dy = -RADIUS, RADIUS do
 			for dz = -1, 1 do
 				local tile = Tile(Position(position.x + dx, position.y + dy, position.z + dz))
-				if tile then
-					for _, thing in ipairs(tile:getItems()) do
+				local things = tile and tile:getItems()
+				if things then
+					for _, thing in ipairs(things) do
 						local openId = closedToOpen[thing:getId()]
 						if openId then
 							thing:transform(openId)
