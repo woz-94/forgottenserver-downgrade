@@ -25,6 +25,7 @@ closedToOpen[9532] = 9533
 -- otherwise only flip their sprite.
 function unlockNearbyGates(position, radius)
 	local opened = false
+	local nearby = {}
 	radius = radius or 8
 
 	for dx = -radius, radius do
@@ -34,7 +35,9 @@ function unlockNearbyGates(position, radius)
 				local things = tile and tile:getItems()
 				if things then
 					for _, thing in ipairs(things) do
-						local openId = closedToOpen[thing:getId()]
+						local id = thing:getId()
+						nearby[id] = true
+						local openId = closedToOpen[id]
 						if openId then
 							thing:transform(openId)
 							opened = true
@@ -43,6 +46,14 @@ function unlockNearbyGates(position, radius)
 				end
 			end
 		end
+	end
+
+	if not opened then
+		local ids = {}
+		for id in pairs(nearby) do ids[#ids + 1] = id end
+		table.sort(ids)
+		print(string.format("[gate-unlock] no door/gate found near %d,%d,%d; nearby items: %s",
+			position.x, position.y, position.z, table.concat(ids, ',')))
 	end
 
 	if opened then
@@ -72,7 +83,10 @@ local leverIds = {
 local mechanism = Action()
 
 function mechanism.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	unlockNearbyGates(item:getPosition(), 8)
+	local position = item:getPosition()
+	print(string.format("[gate-unlock] fallback used: item=%d aid=%d uid=%d at %d,%d,%d",
+		item:getId(), item:getActionId(), item:getUniqueId(), position.x, position.y, position.z))
+	unlockNearbyGates(position, 8)
 	return true
 end
 

@@ -147,7 +147,10 @@ function transformTo.onUse(player, item, fromPosition, target, toPosition,
 
 	item:transform(transformIds)
 	if leverIds[itemId] and unlockNearbyGates then
-		unlockNearbyGates(item:getPosition(), 8)
+		local position = item:getPosition()
+		print(string.format("[gate-unlock] lever used: item=%d aid=%d uid=%d at %d,%d,%d",
+			itemId, item:getActionId(), item:getUniqueId(), position.x, position.y, position.z))
+		unlockNearbyGates(position, 8)
 	end
 	return true
 end
