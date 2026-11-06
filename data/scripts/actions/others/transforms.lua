@@ -130,14 +130,25 @@ local transformItems = {
 	[12211] = 12210 -- wall lamp
 }
 
+-- Lever item ids handled here; also open any nearby gate/door they control.
+local leverIds = {
+	[1945] = true, [1946] = true,
+	[9825] = true, [9826] = true, [9827] = true, [9828] = true,
+	[10029] = true, [10030] = true, [10044] = true, [10045] = true,
+}
+
 local transformTo = Action()
 
 function transformTo.onUse(player, item, fromPosition, target, toPosition,
                            isHotkey)
-	local transformIds = transformItems[item:getId()]
+	local itemId = item:getId()
+	local transformIds = transformItems[itemId]
 	if not transformIds then return false end
 
 	item:transform(transformIds)
+	if leverIds[itemId] and unlockNearbyGates then
+		unlockNearbyGates(item:getPosition(), 8)
+	end
 	return true
 end
 

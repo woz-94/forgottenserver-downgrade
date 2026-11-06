@@ -21,35 +21,14 @@ addPairs(closedLevelDoors, 1)
 -- Yalahar / custom gate pair.
 closedToOpen[9532] = 9533
 
-local leverIds = {
-	1945, 1946,
-	5505, 5506, 5507, 5508, 5509, 5510, 5511, 5512,
-	9531, 9534,
-	9825, 9826, 9827, 9828,
-	10029, 10030, 10044, 10045,
-	11062, 11063,
-	20220, 20221, 20223, 20224, 20225,
-	23062, 23063, 23064, 23065, 23066, 23067,
-	23076, 23077, 23078, 23079,
-	23151, 23152, 23153, 23154, 23158, 23159,
-	23415, 23416, 23423, 23430,
-	23496, 23497, 23498, 23499, 23500, 23501, 23502, 23503,
-	23519, 23522, 23661,
-	24127, 24161, 24190, 24191, 24194,
-	33158, 33181, 33182,
-	35243, 35244, 35245, 35246, 35247, 35248, 35249, 35250,
-}
-
-local RADIUS = 8
-
-local mechanism = Action()
-
-function mechanism.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	local position = item:getPosition()
+-- Shared helper, also used by transforms.lua for lever item ids that would
+-- otherwise only flip their sprite.
+function unlockNearbyGates(position, radius)
 	local opened = false
+	radius = radius or 8
 
-	for dx = -RADIUS, RADIUS do
-		for dy = -RADIUS, RADIUS do
+	for dx = -radius, radius do
+		for dy = -radius, radius do
 			for dz = -1, 1 do
 				local tile = Tile(Position(position.x + dx, position.y + dy, position.z + dz))
 				local things = tile and tile:getItems()
@@ -69,6 +48,31 @@ function mechanism.onUse(player, item, fromPosition, target, toPosition, isHotke
 	if opened then
 		position:sendMagicEffect(CONST_ME_POFF)
 	end
+	return opened
+end
+
+-- Lever ids already registered by transforms.lua are handled there instead
+-- (1945/1946, 9825-9828, 10029/10030, 10044/10045).
+local leverIds = {
+	5505, 5506, 5507, 5508, 5509, 5510, 5511, 5512,
+	9531, 9534,
+	11062, 11063,
+	20220, 20221, 20223, 20224, 20225,
+	23062, 23063, 23064, 23065, 23066, 23067,
+	23076, 23077, 23078, 23079,
+	23151, 23152, 23153, 23154, 23158, 23159,
+	23415, 23416, 23423, 23430,
+	23496, 23497, 23498, 23499, 23500, 23501, 23502, 23503,
+	23519, 23522, 23661,
+	24127, 24161, 24190, 24191, 24194,
+	33158, 33181, 33182,
+	35243, 35244, 35245, 35246, 35247, 35248, 35249, 35250,
+}
+
+local mechanism = Action()
+
+function mechanism.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	unlockNearbyGates(item:getPosition(), 8)
 	return true
 end
 
